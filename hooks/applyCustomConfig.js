@@ -313,8 +313,19 @@ var applyCustomConfig = (function(){
                         name: parts[2],
                         value: preference.attrib.value
                     };
+                if(!!preference.attrib.filter){
+                    prefData["filter"] = preference.attrib.filter;
+                }
                 if(preference.attrib.buildType){
                     prefData["buildType"] = preference.attrib.buildType;
+                    var buildType = preference.attrib.buildType;
+                    console.log(prefData.name + " ::" + buildType);
+                    if (!!buildType){
+                        var buildTypeParts = buildType.split(":");
+                        buildType = buildTypeParts[0];
+                        prefData["filter"] = buildTypeParts.length > 1 ? buildTypeParts[1] : "";
+                    }
+                    prefData["buildType"] = buildType;
                 }
                 if(preference.attrib.quote){
                     prefData["quote"] = preference.attrib.quote;
@@ -810,7 +821,8 @@ var applyCustomConfig = (function(){
 
     /**
      * Updates an XCode build configuration setting with the given item.
-     * @param {Object} item - configuration item containing setting data
+     * Support filter, for example: item.filter="PRODUCT_BUNDLE_IDENTIFIER:<bundleID>"
+     * @param {Object} item - configuration item containing setting data and filter
      * @param {Object} buildConfig - XCode build config object
      * @param {String} mode - update mode: "replace" to replace only existing keys or "add" to add a new key to every block
      * @returns {boolean} true if buildConfig was modified
@@ -825,9 +837,21 @@ var applyCustomConfig = (function(){
                 quotedMatch = !!block["buildSettings"][quoteEscape(item.name)],
                 match = literalMatch || quotedMatch;
 
+            var modify = false;
             if((match || mode === "add") &&
                 (!item.buildType || item.buildType.toLowerCase() === block['name'].toLowerCase())){
+                    modify = true;
+            }
 
+            if(!!item.filter){
+                var kv = item.filter.split(":", 2);
+                var filterKey = kv[0];
+                var filterVal = kv[1];
+                var blockVal = block["buildSettings"][filterKey] || block["buildSettings"][quoteEscape(filterKey)];
+                modify = !!blockVal && blockVal === filterVal;
+            }
+
+            if(modify){
                 var name;
                 if(match){
                     name = literalMatch ? item.name : quoteEscape(item.name);
