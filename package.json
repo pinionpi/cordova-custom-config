@@ -1,5 +1,5 @@
 {
-    "version": "5.0.2",
+    "version": "5.1.0",
     "name": "cordova-custom-config",
     "cordova_name": "cordova-custom-config",
     "description": "Cordova/Phonegap plugin to update platform configuration files based on preferences and config-file data defined in config.xml.",
@@ -29,9 +29,10 @@
         "manifest"
     ],
     "dependencies": {
-        "lodash": "^4.3.0",
+        "q": "^1.4.1",
+        "lodash": "^4.17.11",
         "elementtree": "^0.1.6",
-        "plist": "xiangpingmeng/plist.js",
+        "plist": "^3.0.1",
         "xcode": "^1.0.0",
         "colors": "^1.1.2",
         "shelljs": "^0.7.0",
