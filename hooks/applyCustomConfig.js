@@ -848,7 +848,9 @@ var applyCustomConfig = (function(){
                 var filterKey = kv[0];
                 var filterVal = kv[1];
                 var blockVal = block["buildSettings"][filterKey] || block["buildSettings"][quoteEscape(filterKey)];
+                blockVal = quoteUnescape(blockVal);
                 modify = !!blockVal && blockVal === filterVal;
+                // DEBUG: logger.verbose("[modify=" + modify + "] filterKey=" + filterKey + ", filterVal=" + filterVal + ", blockVal=" + blockVal);
             }
 
             if(modify){
@@ -998,6 +1000,13 @@ var applyCustomConfig = (function(){
 
     function quoteEscape(value){
         return '"'+value+'"';
+    }
+
+    function quoteUnescape(value){
+        if (!!value && value.startsWith('"') && value.endsWith('"')) {
+            return value.substring(1, value.length-1);
+        }
+        return value;
     }
 
     function onlyUnique(value, index, self){
