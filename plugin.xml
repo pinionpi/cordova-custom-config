@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-custom-config"
+    id="zzz-custom-config"
     version="5.1.0">
 
-    <name>cordova-custom-config</name>
+    <name>zzz-custom-config</name>
     <description>Cordova/Phonegap plugin to update platform configuration files based on preferences and config-file data defined in config.xml</description>
     <author>Dave Alden</author>
+    <author>Pinion</author>
 
     <engines>
         <engine name="cordova" version=">=3.0.0" />
